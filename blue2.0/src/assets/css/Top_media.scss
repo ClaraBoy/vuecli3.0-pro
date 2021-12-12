@@ -1,0 +1,15 @@
+@media (max-width: 1200px){
+  .intbox input{
+    display: none;
+  }
+  .intbox .intbut{
+      display: none;
+}
+  .logo{
+    width: 100%;
+    margin: 0 auto;
+  }
+  .el-input__prefix{
+    display: none;
+  }
+} /*>=1024的设备*/

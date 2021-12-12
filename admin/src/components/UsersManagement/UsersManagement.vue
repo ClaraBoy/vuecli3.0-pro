@@ -1,0 +1,130 @@
+<template>
+<div>
+  <el-table
+    width="100%"
+    :data="applicationUserInfo.list"
+  >
+    <el-table-column
+      prop="applicationid"
+      label="用户"
+      sortable
+      width="150">
+    </el-table-column>
+    <el-table-column
+      prop="applicationNickName"
+      label="昵称"
+      sortable
+      width="150">
+    </el-table-column>
+    <el-table-column
+      prop="applicationrealityName"
+      label="用户姓名"
+      sortable
+      width="150">
+    </el-table-column>
+    <el-table-column
+      prop="applicationcardID"
+      label="身份证号"
+      sortable
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="applicationdate"
+      label="日期"
+      sortable
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="remark1"
+      label="是否通过"
+      sortable
+      width="100">
+    </el-table-column>
+    <el-table-column
+      prop="remark2"
+      label="申请理由"
+      sortable
+      width="180">
+    </el-table-column>
+    <el-table-column
+      fixed="right"
+      label="操作"
+      width="160">
+      <template slot-scope="scope">
+        <el-button v-show="!scope.row.remark1==='yse'"
+          @click.native.prevent="pass(scope.row.applicationid)"
+          type="text"
+          size="small">
+          通过
+        </el-button>
+        <el-button v-show="scope.row.remark1==='yse'"
+          @click.native.prevent="noPass(scope.row.applicationid)"
+          type="text"
+          size="small">
+          不通过
+        </el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+</div>
+</template>
+<script>
+import {applicationCon, oneEU} from "../../network/request"
+
+export default {
+  name: "UsersManagement",
+  inject:['reload'],
+  data(){
+    return{
+      applicationUserInfo: {list:[{}]}
+    }
+  },
+  methods:{
+    msg(applicationid,msg){
+      oneEU({
+        url:"/sendDirectMessage/"+applicationid+"/"+msg,
+      })
+    },
+    pass(applicationid){
+      applicationCon({
+          url:"/updatePass/"+applicationid+"/yes",
+          method:"Post",
+        }).then(res=>{
+        this.updateUserPower(applicationid,"会员");
+        this.msg(applicationid,"创作者审核通过");
+        this.reload();
+      })
+    },
+    noPass(applicationid){
+      applicationCon({
+        url:"/updatePass/"+applicationid+"/no",
+        method:"Post",
+      }).then(res=>{
+        this.updateUserPower(applicationid,"普通");
+        this.msg(applicationid,"创作者审核未通过");
+          this.reload();
+      })
+    },
+    updateUserPower(applicationid,power){
+      applicationCon({
+        url:"/updatePower/"+applicationid+"/"+power,
+        method:"POST",
+      }).then(res=>{
+        this.$message.success("设置成功");
+      })
+    }
+  },
+  mounted() {
+    applicationCon({
+        url:"/applicationId",
+        method:"GET",
+      }).then(res=>{
+        this.applicationUserInfo.list=res.data;
+      })
+  }
+}
+</script>
+
+<style scoped>
+
+</style>

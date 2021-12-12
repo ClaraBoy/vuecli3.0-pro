@@ -1,0 +1,14 @@
+@media (max-width: 1200px){
+  .right_span{
+    display: none;
+  }
+  .lao span{
+    display: none;
+  }
+  .left_span{
+    z-index: -500;
+  }
+  .left_red{
+    display: none;
+  }
+} /*>=1024的设备*/

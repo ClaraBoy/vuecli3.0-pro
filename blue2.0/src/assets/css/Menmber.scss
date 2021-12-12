@@ -1,0 +1,16 @@
+@media (max-width: 1200px){
+ .right_wrap{
+   visibility: hidden;
+ }
+  .Box_wrap{
+    visibility: hidden;
+  }
+} /*>=1024的设备*/
+@media (min-width: 3000px){
+  .right_wrap{
+    visibility: hidden;
+  }
+  .Box_wrap{
+    visibility: hidden;
+  }
+} /*>=1024的设备*/
